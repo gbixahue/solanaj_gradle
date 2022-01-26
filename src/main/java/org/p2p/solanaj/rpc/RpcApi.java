@@ -27,7 +27,7 @@ import org.p2p.solanaj.ws.SubscriptionWebSocketClient;
 import org.p2p.solanaj.ws.listeners.NotificationEventListener;
 
 public class RpcApi {
-    private RpcClient client;
+    protected RpcClient client;
 
     public RpcApi(RpcClient client) {
         this.client = client;

@@ -13,13 +13,17 @@ public class Transaction {
 
     public static final int SIGNATURE_LENGTH = 64;
 
-    private Message message;
-    private List<String> signatures;
-    private byte[] serializedMessage;
+    protected Message message;
+    protected List<String> signatures;
+    protected byte[] serializedMessage;
 
     public Transaction() {
-        this.message = new Message();
-        this.signatures = new ArrayList<String>();
+        this(new Message());
+    }
+
+    public Transaction(Message message) {
+        this.message = message;
+        this.signatures = new ArrayList<>();
     }
 
     public Transaction addInstruction(TransactionInstruction instruction) {

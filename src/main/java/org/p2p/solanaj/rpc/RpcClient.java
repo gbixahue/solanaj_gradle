@@ -27,7 +27,7 @@ public class RpcClient {
 
     public RpcClient(WeightedCluster cluster, boolean attachLoggingInterceptor) {
         this.cluster = cluster;
-        initHttpClient(attachLoggingInterceptor);
+        createHttpClient(attachLoggingInterceptor);
     }
 
     public RpcClient(Cluster endpoint) {
@@ -40,16 +40,19 @@ public class RpcClient {
 
     public RpcClient(String endpoint, boolean attachLoggingInterceptor) {
         this.endpoint = endpoint;
-        initHttpClient(attachLoggingInterceptor);
+        this.httpClient = createHttpClient(attachLoggingInterceptor);
+        this.rpcApi = createRpcApi();
     }
 
-    private void initHttpClient(boolean attachLoggingInterceptor) {
+    protected OkHttpClient createHttpClient(boolean attachLoggingInterceptor) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(20, TimeUnit.SECONDS);
         if (attachLoggingInterceptor) builder.addInterceptor(new LoggingInterceptor());
+        return builder.build();
+    }
 
-        this.httpClient = builder.build();
-        rpcApi = new RpcApi(this);
+    protected RpcApi createRpcApi() {
+        return new RpcApi(this);
     }
 
     public <T> T call(String method, List<Object> params, Class<T> clazz) throws RpcException {

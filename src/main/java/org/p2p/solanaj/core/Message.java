@@ -146,9 +146,13 @@ public class Message {
         this.feePayer = feePayer;
     }
 
+    protected PublicKey getFeePayerPublicKey(){
+        return feePayer.getPublicKey();
+    }
+
     private List<AccountMeta> getAccountKeys() {
         List<AccountMeta> keysList = accountKeys.getList();
-        int feePayerIndex = findAccountIndex(keysList, feePayer.getPublicKey());
+        int feePayerIndex = findAccountIndex(keysList, getFeePayerPublicKey());
 
         List<AccountMeta> newList = new ArrayList<AccountMeta>();
         AccountMeta feePayerMeta = keysList.get(feePayerIndex);
