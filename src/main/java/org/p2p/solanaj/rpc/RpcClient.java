@@ -22,32 +22,36 @@ public class RpcClient {
     private WeightedCluster cluster;
 
     public RpcClient(WeightedCluster cluster) {
-        this(cluster, false);
+        this(cluster, null);
     }
 
-    public RpcClient(WeightedCluster cluster, boolean attachLoggingInterceptor) {
+    public RpcClient(WeightedCluster cluster, List<Interceptor> httpInterceptors) {
         this.cluster = cluster;
-        createHttpClient(attachLoggingInterceptor);
+        createHttpClient(httpInterceptors);
     }
 
     public RpcClient(Cluster endpoint) {
-        this(endpoint.getEndpoint(), false);
+        this(endpoint.getEndpoint(), null);
     }
 
-    public RpcClient(Cluster endpoint, boolean attachLoggingInterceptor) {
-        this(endpoint.getEndpoint(), attachLoggingInterceptor);
+    public RpcClient(Cluster endpoint, List<Interceptor> httpInterceptors) {
+        this(endpoint.getEndpoint(), httpInterceptors);
     }
 
-    public RpcClient(String endpoint, boolean attachLoggingInterceptor) {
+    public RpcClient(String endpoint, List<Interceptor> httpInterceptors) {
         this.endpoint = endpoint;
-        this.httpClient = createHttpClient(attachLoggingInterceptor);
+        this.httpClient = createHttpClient(httpInterceptors);
         this.rpcApi = createRpcApi();
     }
 
-    protected OkHttpClient createHttpClient(boolean attachLoggingInterceptor) {
+    protected OkHttpClient createHttpClient(List<Interceptor> httpInterceptors) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(20, TimeUnit.SECONDS);
-        if (attachLoggingInterceptor) builder.addInterceptor(new LoggingInterceptor());
+        if (httpInterceptors != null) {
+            for (Interceptor interceptor : httpInterceptors) {
+                builder.addInterceptor(interceptor);
+            }
+        }
         return builder.build();
     }
 
