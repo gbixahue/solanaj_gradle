@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class AnchorBasicTutorialProgram extends Program {
 
-    // Testnet address of basic-0 = EkEwddr34fqnv2SJREPynyC335PE32PAfjY4LVW5bTJS (has a method called initialize)
-    private static final PublicKey PROGRAM_ID = new PublicKey("EkEwddr34fqnv2SJREPynyC335PE32PAfjY4LVW5bTJS");
     private static final String FUNCTION_NAMESPACE = "global::initialize";
 
     /**
@@ -35,7 +33,7 @@ public class AnchorBasicTutorialProgram extends Program {
         byte[] transactionData = encodeInitializeData();
 
         return createTransactionInstruction(
-                PROGRAM_ID,
+                Program.Id.anchorBasic,
                 keys,
                 transactionData
         );

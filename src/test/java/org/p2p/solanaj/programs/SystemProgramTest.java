@@ -18,7 +18,7 @@ public class SystemProgramTest {
 
         TransactionInstruction instruction = SystemProgram.transfer(fromPublicKey, toPublickKey, lamports);
 
-        assertEquals(SystemProgram.PROGRAM_ID, instruction.getProgramId());
+        assertEquals(Program.Id.system, instruction.getProgramId());
         assertEquals(2, instruction.getKeys().size());
         assertEquals(toPublickKey, instruction.getKeys().get(1).getPublicKey());
 
@@ -27,8 +27,13 @@ public class SystemProgramTest {
 
     @Test
     public void createAccountInstruction() {
-        TransactionInstruction instruction = SystemProgram.createAccount(SystemProgram.PROGRAM_ID,
-                SystemProgram.PROGRAM_ID, 2039280, 165, SystemProgram.PROGRAM_ID);
+        TransactionInstruction instruction = SystemProgram.createAccount(
+                Program.Id.system,
+                Program.Id.system,
+                2039280,
+                165,
+                Program.Id.system
+        );
 
         assertEquals("11119os1e9qSs2u7TsThXqkBSRUo9x7kpbdqtNNbTeaxHGPdWbvoHsks9hpp6mb2ed1NeB",
                 Base58.encode(instruction.getData()));
