@@ -589,7 +589,7 @@ public class MainnetTest extends AccountBasedTest {
     @Ignore
     public void getConfirmedTransactionTest() throws RpcException {
         String txId = "46VcVPoecvVASnX9vHEZLA8JMS6BVXhvMMhqtGBcn9eg4bHehK6uA2icuTjwjWLZxwfxdT2z1CqYxCHHvjorvWDi";
-        ConfirmedTransaction confirmedTransaction = client.getApi().getConfirmedTransaction(txId);
+        GetTransaction confirmedTransaction = client.getApi().getConfirmedTransaction(txId);
 
         if (confirmedTransaction != null) {
             LOGGER.info(String.format("Tx: %s", confirmedTransaction));

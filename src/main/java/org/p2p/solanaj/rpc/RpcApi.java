@@ -98,15 +98,19 @@ public class RpcApi {
         return client.call("getBalance", params, ValueLong.class).getValue();
     }
 
-    public ConfirmedTransaction getConfirmedTransaction(String signature) throws RpcException {
+    public GetTransaction getTransaction(String signature) throws RpcException {
         List<Object> params = new ArrayList<Object>();
-
         params.add(signature);
-        // TODO jsonParsed, base58, base64
-        // the default encoding is JSON
-        // params.add("json");
 
-        return client.call("getConfirmedTransaction", params, ConfirmedTransaction.class);
+        return client.call("getTransaction", params, GetTransaction.class);
+    }
+
+    @Deprecated
+    public GetTransaction getConfirmedTransaction(String signature) throws RpcException {
+        List<Object> params = new ArrayList<Object>();
+        params.add(signature);
+
+        return client.call("getConfirmedTransaction", params, GetTransaction.class);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

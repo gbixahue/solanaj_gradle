@@ -1,7 +1,6 @@
 package org.p2p.solanaj.rpc.types;
 
 import com.squareup.moshi.Json;
-import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -24,5 +23,5 @@ public class ConfirmedBlock {
     private String previousBlockhash;
 
     @Json(name = "transactions")
-    private List<ConfirmedTransaction> transactions;
+    private List<GetTransaction> transactions;
 }

@@ -8,7 +8,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class ConfirmedTransaction {
+public class GetTransaction {
 
     @Getter
     @ToString
