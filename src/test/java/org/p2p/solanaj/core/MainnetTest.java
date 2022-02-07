@@ -14,7 +14,6 @@ import org.p2p.solanaj.rpc.types.config.Commitment;
 import org.p2p.solanaj.token.TokenManager;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -589,7 +588,7 @@ public class MainnetTest extends AccountBasedTest {
     @Ignore
     public void getConfirmedTransactionTest() throws RpcException {
         String txId = "46VcVPoecvVASnX9vHEZLA8JMS6BVXhvMMhqtGBcn9eg4bHehK6uA2icuTjwjWLZxwfxdT2z1CqYxCHHvjorvWDi";
-        GetTransaction confirmedTransaction = client.getApi().getConfirmedTransaction(txId);
+        TransactionResult confirmedTransaction = client.getApi().getConfirmedTransaction(txId);
 
         if (confirmedTransaction != null) {
             LOGGER.info(String.format("Tx: %s", confirmedTransaction));
