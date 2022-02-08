@@ -90,13 +90,16 @@ public class RpcApi {
         return client.call("getBalance", params, ValueLong.class).getValue();
     }
 
-    public TransactionResult getTransaction(String signature) throws RpcException {
+    public TransactionResult getTransaction(String signature, Commitment commitment) throws RpcException {
+        Map<String, Object> optional = new HashMap<>();
+        optional.put("encoding", "jsonParsed"); //jsonParsed, base58, base64
+        if (null != commitment) {
+            optional.put("commitment", commitment.getValue());
+        }
+
         List<Object> params = new ArrayList<Object>();
         params.add(signature);
-
-        // TODO jsonParsed, base58, base64
-        // the default encoding is JSON
-        params.add("jsonParsed");
+        params.add(optional);
 
         return client.call("getTransaction", params, TransactionResult.class);
     }
