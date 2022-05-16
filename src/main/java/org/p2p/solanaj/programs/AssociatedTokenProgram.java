@@ -12,6 +12,22 @@ import java.util.List;
  */
 public class AssociatedTokenProgram {
 
+    static public TransactionInstruction createSplAssociatedTokenAccountInstruction(
+            PublicKey mint,
+            PublicKey associatedAccount,
+            PublicKey owner,
+            PublicKey payer
+    ) {
+       return createAssociatedTokenAccountInstruction(
+               Program.Id.splAssociatedTokenAccount,
+               Program.Id.token,
+               mint,
+               associatedAccount,
+               owner,
+               payer
+       );
+    }
+
     static public TransactionInstruction createAssociatedTokenAccountInstruction(
             PublicKey associatedProgramId,
             PublicKey programId,
@@ -20,9 +36,6 @@ public class AssociatedTokenProgram {
             PublicKey owner,
             PublicKey payer
     ) {
-        if (associatedProgramId == null) associatedProgramId = Program.Id.splAssociatedTokenAccount;
-        if (programId == null) programId = Program.Id.token;
-
         List<AccountMeta> keys = new ArrayList<>();
         keys.add(new AccountMeta(payer, true, true));
         keys.add(new AccountMeta(associatedAccount, false, true));
