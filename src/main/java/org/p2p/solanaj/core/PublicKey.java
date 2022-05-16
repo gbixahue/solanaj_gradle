@@ -1,15 +1,15 @@
 package org.p2p.solanaj.core;
 
+import org.bitcoinj.core.Base58;
+import org.bitcoinj.core.Sha256Hash;
+import org.p2p.solanaj.programs.Program;
+import org.p2p.solanaj.utils.ByteUtils;
+import org.p2p.solanaj.utils.TweetNaclFast;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-
-import org.bitcoinj.core.Base58;
-import org.bitcoinj.core.Sha256Hash;
-import org.p2p.solanaj.utils.ByteUtils;
-import org.p2p.solanaj.utils.TweetNaclFast;
 
 public class PublicKey {
 
@@ -99,6 +99,43 @@ public class PublicKey {
         return new PublicKey(hash);
     }
 
+    public static PublicKey associatedTokenAddress(PublicKey walletAddress, PublicKey tokenMintAddress) {
+        try {
+            List<byte[]> seeds = new ArrayList<>();
+            seeds.add(walletAddress.pubkey);
+            seeds.add(Program.Id.token.pubkey);
+            seeds.add(tokenMintAddress.pubkey);
+
+            ProgramDerivedAddress foundProgram = findProgramAddress(seeds, Program.Id.splAssociatedTokenAccount);
+            return foundProgram.address;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static ProgramDerivedAddress findProgramAddress(List<byte[]> seeds, PublicKey programId) throws Exception {
+        int nonce = 255;
+        PublicKey address;
+
+        List<byte[]> seedsWithNonce = new ArrayList<byte[]>();
+        seedsWithNonce.addAll(seeds);
+
+        while (nonce != 0) {
+            try {
+                seedsWithNonce.add(new byte[]{(byte) nonce});
+                address = createProgramAddress(seedsWithNonce, programId);
+            } catch (Exception e) {
+                seedsWithNonce.remove(seedsWithNonce.size() - 1);
+                nonce--;
+                continue;
+            }
+
+            return new ProgramDerivedAddress(address, nonce);
+        }
+
+        throw new Exception("Unable to find a viable program address nonce");
+    }
+
     public static class ProgramDerivedAddress {
         private PublicKey address;
         private int nonce;
@@ -118,31 +155,7 @@ public class PublicKey {
 
     }
 
-    public static ProgramDerivedAddress findProgramAddress(List<byte[]> seeds, PublicKey programId) throws Exception {
-        int nonce = 255;
-        PublicKey address;
-
-        List<byte[]> seedsWithNonce = new ArrayList<byte[]>();
-        seedsWithNonce.addAll(seeds);
-
-        while (nonce != 0) {
-            try {
-                seedsWithNonce.add(new byte[] { (byte) nonce });
-                address = createProgramAddress(seedsWithNonce, programId);
-            } catch (Exception e) {
-                seedsWithNonce.remove(seedsWithNonce.size() - 1);
-                nonce--;
-                continue;
-            }
-
-            return new ProgramDerivedAddress(address, nonce);
-        }
-
-        throw new Exception("Unable to find a viable program address nonce");
-    }
-
     public static PublicKey valueOf(String publicKey) {
         return new PublicKey(publicKey);
     }
-
 }
