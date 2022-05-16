@@ -3,7 +3,6 @@ package org.p2p.solanaj.token;
 import org.p2p.solanaj.core.Account;
 import org.p2p.solanaj.core.PublicKey;
 import org.p2p.solanaj.core.Transaction;
-import org.p2p.solanaj.programs.MemoProgram;
 import org.p2p.solanaj.programs.TokenProgram;
 import org.p2p.solanaj.rpc.RpcClient;
 import org.p2p.solanaj.rpc.RpcException;
@@ -33,12 +32,7 @@ public class TokenManager {
         );
 
         // Memo
-        transaction.addInstruction(
-                MemoProgram.writeUtf8(
-                        owner.getPublicKey(),
-                        "Hello from SolanaJ"
-                )
-        );
+        // transaction.addInstruction(MemoProgram.writeUtf8(owner.getPublicKey(), "Hello from SolanaJ"));
 
         // Call sendTransaction
         String result = null;
@@ -75,12 +69,7 @@ public class TokenManager {
         );
 
         // Memo
-        transaction.addInstruction(
-                MemoProgram.writeUtf8(
-                        owner.getPublicKey(),
-                        "Hello from SolanaJ"
-                )
-        );
+        // transaction.addInstruction(MemoProgram.writeUtf8(owner.getPublicKey(), "Hello from SolanaJ"));
 
         // Call sendTransaction
         String result = null;
