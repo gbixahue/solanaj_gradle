@@ -3,25 +3,25 @@ package org.p2p.solanaj.core;
 import org.junit.Test;
 import org.p2p.solanaj.core.PublicKey.ProgramDerivedAddress;
 
-import static org.junit.Assert.*;
-
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+
+import static org.junit.Assert.*;
 
 public class PublicKeyTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void ivalidKeys() {
-        new PublicKey(new byte[] { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0 });
+        new PublicKey(new byte[]{3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0});
         new PublicKey("300000000000000000000000000000000000000000000000000000000000000000000");
         new PublicKey("300000000000000000000000000000000000000000000000000000000000000");
     }
 
     @Test
     public void validKeys() {
-        PublicKey key = new PublicKey(new byte[] { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, });
+        PublicKey key = new PublicKey(new byte[]{3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0,});
         assertEquals("CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3", key.toString());
 
         PublicKey key1 = new PublicKey("CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3");
@@ -30,8 +30,8 @@ public class PublicKeyTest {
         PublicKey key2 = new PublicKey("11111111111111111111111111111111");
         assertEquals("11111111111111111111111111111111", key2.toBase58());
 
-        byte[] byteKey = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 1, };
+        byte[] byteKey = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 1,};
         PublicKey key3 = new PublicKey(byteKey);
         assertArrayEquals(byteKey, new PublicKey(key3.toBase58()).toByteArray());
     }
@@ -50,7 +50,8 @@ public class PublicKeyTest {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bos.write(1);
-        bos.writeBytes(key.toByteArray());
+        byte[] keyByteArray = key.toByteArray();
+        bos.write(keyByteArray, 0, keyByteArray.length);
 
         byte[] bytes = bos.toByteArray();
         assertEquals(key.toString(), PublicKey.readPubkey(bytes, 1).toString());
@@ -64,7 +65,7 @@ public class PublicKeyTest {
                 Arrays.asList(new PublicKey("SeedPubey1111111111111111111111111111111111").toByteArray()), programId);
         assertTrue(programAddress.equals(new PublicKey("GUs5qLUfsEHkcMB9T38vjr18ypEhRuNWiePW2LoK4E3K")));
 
-        programAddress = PublicKey.createProgramAddress(Arrays.asList("".getBytes(), new byte[] { 1 }), programId);
+        programAddress = PublicKey.createProgramAddress(Arrays.asList("".getBytes(), new byte[]{1}), programId);
         assertTrue(programAddress.equals(new PublicKey("3gF2KMe9KiC6FNVBmfg9i267aMPvK37FewCip4eGBFcT")));
 
         // programAddress = PublicKey.createProgramAddress(Arrays.asList("☉".getBytes()), programId);
@@ -84,7 +85,7 @@ public class PublicKeyTest {
 
         ProgramDerivedAddress programAddress = PublicKey.findProgramAddress(Arrays.asList("".getBytes()), programId);
         assertTrue(programAddress.getAddress().equals(PublicKey.createProgramAddress(
-                Arrays.asList("".getBytes(), new byte[] { (byte) programAddress.getNonce() }), programId)));
+                Arrays.asList("".getBytes(), new byte[]{(byte) programAddress.getNonce()}), programId)));
 
     }
 
