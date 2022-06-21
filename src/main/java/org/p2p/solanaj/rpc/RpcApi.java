@@ -1,6 +1,7 @@
 package org.p2p.solanaj.rpc;
 
 import org.p2p.solanaj.core.Account;
+import org.p2p.solanaj.core.MapUtils;
 import org.p2p.solanaj.core.PublicKey;
 import org.p2p.solanaj.core.Transaction;
 import org.p2p.solanaj.rpc.types.*;
@@ -223,7 +224,7 @@ public class RpcApi {
 
         Map<String, Object> parameterMap = new HashMap<>();
 
-        parameterMap.put("encoding", additionalParams.getOrDefault("encoding", "base64"));
+        parameterMap.put("encoding", MapUtils.getOrDefault(additionalParams, "encoding", "base64"));
 
         if (additionalParams.containsKey("commitment")) {
             Commitment commitment = (Commitment) additionalParams.get("commitment");
@@ -760,7 +761,7 @@ public class RpcApi {
 
         if (null != optionalParams) {
             parameterMap = new HashMap<>();
-            parameterMap.put("encoding", optionalParams.getOrDefault("encoding", "jsonParsed"));
+            parameterMap.put("encoding", MapUtils.getOrDefault(optionalParams, "encoding", "jsonParsed"));
             if (optionalParams.containsKey("commitment")) {
                 Commitment commitment = (Commitment) optionalParams.get("commitment");
                 parameterMap.put("commitment", commitment.getValue());
@@ -949,7 +950,7 @@ public class RpcApi {
 
         Map<String, Object> parameterMap = new HashMap<>();
 
-        parameterMap.put("encoding", additionalParams.getOrDefault("encoding", "base64"));
+        parameterMap.put("encoding", MapUtils.getOrDefault(additionalParams, "encoding", "base64"));
 
         if (additionalParams.containsKey("commitment")) {
             Commitment commitment = (Commitment) additionalParams.get("commitment");
